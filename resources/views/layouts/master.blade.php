@@ -88,10 +88,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <router-link to="/users" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Active Page</p>
-                  </a>
+                    <p>Users</p>
+                  </router-link>
                 </li>
 
               </ul>
