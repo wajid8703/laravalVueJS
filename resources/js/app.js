@@ -16,7 +16,28 @@ Vue.use(VueRouter)
 let routes = [
     { path: '/dashboard', component: require('./components/DashboardComponent.vue').default },
     { path: '/users', component: require('./components/UsersComponent.vue').default },
-    { path: '/profile', component: require('./components/ProfileComponent.vue').default }
+    { path: '/profile', component: require('./components/ProfileComponent.vue').default },
+    {
+        path: '/user/:id',
+        component: require('./components/UsersComponent.vue').default,
+        children: [
+            //if no route matches then this route will be called
+            { path: '', component: require('./components/DashboardComponent.vue').default },
+            {
+                // UserProfile will be rendered inside User's <router-view>
+                // when /user/:id/profile is matched
+                //numbers(12...) will not work in the path URL string
+                path: 'profilee',
+                component: require('./components/UsersComponent.vue').default
+            },
+            {
+                // UserPosts will be rendered inside User's <router-view>
+                // when /user/:id/posts is matched
+                path: 'posts',
+                component: require('./components/UsersComponent.vue').default
+            }
+        ]
+    }
 ]
 
 // mode:history is added to display proper url like /profile instead of /home/profile
