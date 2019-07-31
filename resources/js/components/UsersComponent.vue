@@ -7,7 +7,7 @@
             <h3 class="box-title">Responsive Hover Table</h3>
 
             <div class="box-tools">
-              <button class="bt btn-success" data-toggle="modal" data-target="#addNew">Add New</button>
+              <button class="bt btn-success" @click="newModal" data-toggle="modal" data-target="#addNew">Add New</button>
               <br />
             </div>
             <br />
@@ -30,7 +30,7 @@
                   <td>{{ user.email }}</td>
                   <td>{{ user.created_at | myDate}}</td>
                   <td>
-                    <a href="#">
+                    <a href="#" @click="editModal(user)">
                       Edit
                       <i class="fa fa-edit"></i>
                     </a>
@@ -61,12 +61,13 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addNewlabel">Modal title</h5>
+            <h5 v-show="!editmode" class="modal-title" id="addNewlabel">Add New</h5>
+            <h5 v-show="editmode" class="modal-title" id="addNewlabel">Update</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form @submit.prevent="createUser">
+          <form @submit.prevent="editmode ? updateUser() : createUser()">
             <div class="modal-body">
               <div class="form-group">
                 <label>Name</label>
@@ -109,7 +110,8 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Create</button>
+              <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
+              <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
             </div>
           </form>
         </div>
@@ -124,6 +126,7 @@ export default {
   data() {
     return {
       users: {},
+      editmode: false,
       form: new Form({
         name: "",
         email: "",
@@ -132,6 +135,21 @@ export default {
     };
   },
   methods: {
+    updateUser() {
+     
+},
+    editModal(user) {
+      this.editmode = true;
+      this.form.reset();
+      $('#addNew').modal('show');
+      //fill the 
+      this.form.fill(user);
+    },
+    newModal() {
+      this.editmode = false;
+      this.form.reset();
+      $('#addNew').modal('show');
+    },
     deleteUser(id) {
       swal
         .fire({
