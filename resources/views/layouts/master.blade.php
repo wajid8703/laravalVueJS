@@ -129,6 +129,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="container-fluid">
           {{-- when user click on any link then it will look and pull the component here --}}
           <router-view></router-view>
+          
+          <vue-progress-bar></vue-progress-bar>
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content -->

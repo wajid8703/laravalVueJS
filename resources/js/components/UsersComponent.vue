@@ -20,23 +20,22 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Type</th>
+                  <th>Registered At</th>
                   <th>Actions</th>
                 </tr>
-                <tr>
-                  <td>183</td>
-                  <td>John Doe</td>
-                  <td>11-7-2014</td>
-                  <td>
-                    <span class="label label-success">Approved</span>
-                  </td>
+                <tr v-for="user in users" :key="user.id">
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.name | upText }}</td>
+                  <!-- upText and myDate are both user defined functions globally -->
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.created_at | myDate}}</td>
                   <td>
                     <a href="#">
                       Edit
                       <i class="fa fa-edit"></i>
                     </a>
                     /
-                    <a href="#">
+                    <a href="#" @click="deleteUser(user.id)">
                       Delete
                       <i class="fa fa-trash"></i>
                     </a>
@@ -124,6 +123,7 @@
 export default {
   data() {
     return {
+      users: {},
       form: new Form({
         name: "",
         email: "",
@@ -131,13 +131,75 @@ export default {
       })
     };
   },
-  methods:{
-    createUser(){
-      this.form.post('api/user');
+  methods: {
+    deleteUser(id) {
+      swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        })
+        .then(result => {
+         
+          //send ajax request to server
+          if (result.value) {
+            this.form
+            .delete("api/user/" + id)
+            .then(() => { 
+              Fire.$emit("AfterCreate");
+
+              swal.fire("Deleted!", "Your file has been deleted.", "success");
+            })
+            .catch(() => {
+              swal.fire("Failed!", "Something went wrong.", "error");
+            });
+          }
+          
+        });
+    },
+    loadUsers() {
+      // { data } this is function in latest script and previous was function({data})
+      axios.get("api/user").then(({ data }) => (this.users = data.data));
+    },
+
+    createUser() {
+      //show progress bar
+      this.$Progress.start();
+      this.form
+        .post("api/user")
+        .then(() => {
+          //call event
+          Fire.$emit("AfterCreate");
+
+          $("#addNew").modal("hide");
+          toast.fire({
+            type: "success",
+            title: "Signed in successfully"
+          });
+          // this.loadUsers();
+
+          this.$Progress.finish();
+        })
+        .catch(() => {
+          toast.fire({
+            type: "error",
+            title: "Something went wrong!"
+          });
+        });
     }
   },
-  mounted() {
-    console.log("Component mounted.");
+  created() {
+    this.loadUsers();
+    //event declared
+    Fire.$on("AfterCreate", () => {
+      this.loadUsers();
+    });
+    //call this function after every 3 ms to fetch and display data
+    // setInterval(() => this.loadUsers(),3000);
   }
 };
 </script>
