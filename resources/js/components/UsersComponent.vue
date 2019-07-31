@@ -7,7 +7,7 @@
             <h3 class="box-title">Responsive Hover Table</h3>
 
             <div class="box-tools">
-              <button class="bt btn-success" data-toggle="modal" data-target="#exampleModal">Add New</button>
+              <button class="bt btn-success" data-toggle="modal" data-target="#addNew">Add New</button>
               <br />
             </div>
             <br />
@@ -59,7 +59,7 @@
       aria-labelledby="addNewlabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addNewlabel">Modal title</h5>
@@ -67,11 +67,52 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+          <form @submit.prevent="createUser">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Name</label>
+                <input
+                  v-model="form.name"
+                  placeholder="Name"
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('name') }"
+                />
+                <has-error :form="form" field="name"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  v-model="form.email"
+                  placeholder="Email"
+                  type="text"
+                  name="email"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('email') }"
+                />
+                <has-error :form="form" field="email"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  v-model="form.password"
+                  placeholder="Password"
+                  type="password"
+                  name="password"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('password') }"
+                />
+                <has-error :form="form" field="password"></has-error>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -81,6 +122,20 @@
 
 <script>
 export default {
+  data() {
+    return {
+      form: new Form({
+        name: "",
+        email: "",
+        password: ""
+      })
+    };
+  },
+  methods:{
+    createUser(){
+      this.form.post('api/user');
+    }
+  },
   mounted() {
     console.log("Component mounted.");
   }
