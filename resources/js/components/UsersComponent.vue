@@ -7,7 +7,12 @@
             <h3 class="box-title">Responsive Hover Table</h3>
 
             <div class="box-tools">
-              <button class="bt btn-success" @click="newModal" data-toggle="modal" data-target="#addNew">Add New</button>
+              <button
+                class="bt btn-success"
+                @click="newModal"
+                data-toggle="modal"
+                data-target="#addNew"
+              >Add New</button>
               <br />
             </div>
             <br />
@@ -128,6 +133,7 @@ export default {
       users: {},
       editmode: false,
       form: new Form({
+        id: "",
         name: "",
         email: "",
         password: ""
@@ -136,19 +142,30 @@ export default {
   },
   methods: {
     updateUser() {
-     
-},
+      this.$Progress.start();
+      this.form
+        .put("api/user/" + this.form.id)
+        .then(() => {
+          $("#addNew").modal("hide");
+          Fire.$emit("ActionDone");
+          swal.fire("Updated!", "Your data has been updated.", "success");
+          this.$Progress.finish();
+        })
+        .catch(() => {
+          this.$Progress.fail();
+        });
+    },
     editModal(user) {
       this.editmode = true;
       this.form.reset();
-      $('#addNew').modal('show');
-      //fill the 
+      $("#addNew").modal("show");
+      //fill the
       this.form.fill(user);
     },
     newModal() {
       this.editmode = false;
       this.form.reset();
-      $('#addNew').modal('show');
+      $("#addNew").modal("show");
     },
     deleteUser(id) {
       swal
@@ -162,26 +179,35 @@ export default {
           confirmButtonText: "Yes, delete it!"
         })
         .then(result => {
-         
           //send ajax request to server
           if (result.value) {
             this.form
-            .delete("api/user/" + id)
-            .then(() => { 
-              Fire.$emit("AfterCreate");
+              .delete("api/user/" + id)
+              .then(() => {
+                Fire.$emit("ActionDone");
 
-              swal.fire("Deleted!", "Your file has been deleted.", "success");
-            })
-            .catch(() => {
-              swal.fire("Failed!", "Something went wrong.", "error");
-            });
+                swal.fire("Deleted!", "Your data has been deleted.", "success");
+              })
+              .catch(() => {
+                swal.fire("Failed!", "Something went wrong.", "error");
+              });
           }
-          
         });
     },
     loadUsers() {
       // { data } this is function in latest script and previous was function({data})
-      axios.get("api/user").then(({ data }) => (this.users = data.data));
+      axios
+        .get("api/user", {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: ""
+          }
+        })
+        .then(({ data }) => (this.users = data.data))
+        .catch(response => {
+          console.log(response);
+        });
     },
 
     createUser() {
@@ -191,7 +217,7 @@ export default {
         .post("api/user")
         .then(() => {
           //call event
-          Fire.$emit("AfterCreate");
+          Fire.$emit("ActionDone");
 
           $("#addNew").modal("hide");
           toast.fire({
@@ -213,7 +239,7 @@ export default {
   created() {
     this.loadUsers();
     //event declared
-    Fire.$on("AfterCreate", () => {
+    Fire.$on("ActionDone", () => {
       this.loadUsers();
     });
     //call this function after every 3 ms to fetch and display data

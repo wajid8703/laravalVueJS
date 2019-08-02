@@ -43,8 +43,9 @@ Vue.use(VueProgressBar, {
 
 let routes = [
     { path: '/dashboard', component: require('./components/DashboardComponent.vue').default },
-    { path: '/users', component: require('./components/UsersComponent.vue').default },
+    { path: '/developer', component: require('./components/DeveloperComponent.vue').default },
     { path: '/profile', component: require('./components/ProfileComponent.vue').default },
+    { path: '/users', component: require('./components/UsersComponent.vue').default },
     {
         path: '/user/:id',
         component: require('./components/UsersComponent.vue').default,
@@ -86,6 +87,22 @@ Vue.filter('myDate', function(created) {
 //to call any event in the app
 let Fire = new Vue();
 window.Fire = Fire;
+
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue').default
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue').default
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue').default
+);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
