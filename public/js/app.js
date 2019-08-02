@@ -2257,13 +2257,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       // { data } this is function in latest script and previous was function({data})
-      axios.get("api/user", {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: ""
-        }
-      }).then(function (_ref) {
+      axios.get("api/user").then(function (_ref) {
         var data = _ref.data;
         return _this3.users = data.data;
       })["catch"](function (response) {

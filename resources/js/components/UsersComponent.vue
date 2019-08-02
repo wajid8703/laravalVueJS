@@ -197,13 +197,7 @@ export default {
     loadUsers() {
       // { data } this is function in latest script and previous was function({data})
       axios
-        .get("api/user", {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: ""
-          }
-        })
+        .get("api/user")
         .then(({ data }) => (this.users = data.data))
         .catch(response => {
           console.log(response);
