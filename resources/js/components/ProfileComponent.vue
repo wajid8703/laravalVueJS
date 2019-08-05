@@ -53,14 +53,14 @@
             <!-- /.row -->
           </div>
         </div>
-        <form action="/action_page.php">
+        <form >
           <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" />
+            <input type="text" v-model="form.name" class="form-control" id="name" />
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" />
+            <input type="email" v-model="form.email" class="form-control" id="email" />
           </div>
 
           <div class="form-group form-check">
