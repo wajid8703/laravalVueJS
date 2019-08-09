@@ -63,12 +63,7 @@
             <input type="email" v-model="form.email" class="form-control" id="email" />
           </div>
 
-          <div class="form-group form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" /> Remember me
-            </label>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" @click.prevent="updateInfo()" class="btn btn-primary">Submit</button>
         </form>
       </div>
     </div>
@@ -89,6 +84,18 @@ export default {
   },
   mounted() {
     console.log("Component mounted.");
+  },
+  methods:{
+    updateInfo(){
+      this.$Progress.start();
+      this.form.put('api/profile')
+      .then( () => {
+        this.$Progress.finish();
+      })
+      .catch( () => {
+        this.$Progress.fail();
+      });
+    }
   },
   created() {
     axios.get("api/profile").then(({ data }) => (this.form.fill(data)));
