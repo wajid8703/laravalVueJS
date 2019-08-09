@@ -70,7 +70,7 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'email' => 'required',
-            'password' => 'required',
+            'name' => 'required',
         ]);
 
         $user = auth('api')->user();

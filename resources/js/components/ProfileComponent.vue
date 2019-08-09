@@ -56,11 +56,14 @@
         <form >
           <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" v-model="form.name" class="form-control" id="name" />
+            <input type="text" v-model="form.name" class="form-control" id="name" :class="{ 'is-invalid': form.errors.has('name') }" />
+            <has-error :form="form" field="name"></has-error>
           </div>
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" v-model="form.email" class="form-control" id="email" />
+            <input type="email" v-model="form.email" class="form-control" id="email" :class="{ 'is-invalid': form.errors.has('email') }" />
+            <has-error :form="form" field="email"></has-error>
+
           </div>
 
           <button type="submit" @click.prevent="updateInfo()" class="btn btn-primary">Submit</button>
