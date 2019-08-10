@@ -12,7 +12,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-  <title>AdminLTE 3 | Starter</title>
+  <title>Laravel VueJS Training</title>
 
   <link rel="stylesheet" href="/css/app.css">
 </head>
@@ -96,6 +96,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               </ul>
             </li>
+            <li class="nav-item">
+                <router-link to="/categories" class="nav-link">
+                  <i class="fas fa-user"></i>
+                  <p>Categories</p>
+                </router-link>
+              </li>
             <li class="nav-item">
               <router-link to="/developer" class="nav-link">
                 <i class="fas fa-user"></i>

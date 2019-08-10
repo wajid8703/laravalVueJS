@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Responsive Hover Table</h3>
+            <h3 class="box-title">Users list</h3>
 
             <div class="box-tools">
               <button

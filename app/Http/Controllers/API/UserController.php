@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -81,6 +82,19 @@ class UserController extends Controller
 
         $user->update($request->all());
         return ['message' => 'Success'];
+    }
+
+    public function AddCategory(Request $request){
+
+        \DB::table('categories')->insert(
+            ['category_name' => $request->name, 'category_flag' => $request->flag]
+        );
+        return ['message' => "ok"];
+    }
+
+    public function getCategories(){
+
+        return Category::latest()->paginate(10);
     }
 
 
