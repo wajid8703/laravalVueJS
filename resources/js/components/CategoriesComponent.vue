@@ -25,11 +25,23 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Flag</th>
-                  <th>Created At</th>
                   <th>Actions</th>
                 </tr>
-                <tr>
-                  <td></td>
+                <tr v-for="category in categories" :key="category.category_id" >
+                  <td> {{category.category_id }} </td>
+                  <td> {{category.category_name }} </td>
+                  <td> {{category.category_flag }} </td>
+                   <td>
+                    <a href="#" @click="editModal(category)">
+                      Edit
+                      <i class="fa fa-edit"></i>
+                    </a>
+                    /
+                    <a href="#" @click="deleteCategory(category.category_id)">
+                      Delete
+                      <i class="fa fa-trash"></i>
+                    </a>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -110,10 +122,39 @@ export default {
     };
   },
   methods: {
+    deleteCategory(id){
+       swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        })
+        .then(result => {
+          //send ajax request to server
+          if (result.value) {
+            console.log('value'+result.value);
+            this.form
+              .post("api/deletecategory/" + id)
+              .then(() => {
+                // Fire.$emit("ActionDone");
+              this.loadCategories();
+                swal.fire("Deleted!", "Your data has been deleted.", "success");
+              })
+              .catch(() => {
+                swal.fire("Failed!", "Something went wrong.", "error");
+              });
+          }
+        });
+    },
     loadCategories() {
       axios
-        .get("api/categories")
-        .then(({ data }) => (this.categories = data.data))
+        .get("api/categories1")
+        .then(({ data }) => (
+           this.categories = data))
         .catch(response => {
           console.log(response);
         });
@@ -121,7 +162,14 @@ export default {
     createCategory() {
       this.form
         .post("api/addcategory")
-        .then(() => {})
+        .then(() => {
+          $("#addNew").modal("hide");
+          toast.fire({
+            type: "success",
+            title: "Category added successfully"
+          });
+          this.loadCategories();
+        })
         .catch(() => {});
     },
     newModal() {
@@ -130,6 +178,7 @@ export default {
     }
   },
   mounted() {
+    
       this.loadCategories();
     console.log("Component mounted.");
   }

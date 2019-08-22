@@ -23,4 +23,5 @@ Route::apiResources(['user' => 'API\UserController']);
 Route::get('profile','API\UserController@profile');
 Route::put('profile','API\UserController@updateProfile');
 Route::post('addcategory','API\UserController@AddCategory');
-Route::get('categories','API\UserController@getCategories');
+Route::post('deletecategory/{id}','API\UserController@deleteCategory');
+Route::get('categories1','API\UserController@getCategories');

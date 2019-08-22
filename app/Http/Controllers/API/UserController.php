@@ -94,7 +94,16 @@ class UserController extends Controller
 
     public function getCategories(){
 
-        return Category::latest()->paginate(10);
+        // $a = Category::latest()->paginate(60);
+        $a = Category::get();
+        
+        return $a;
+    }
+
+    public function deleteCategory($id){
+        $a = Category::findOrFail($id);
+        $a->delete();
+        return ['message' => 'Deleted'];
     }
 
 

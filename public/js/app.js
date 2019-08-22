@@ -1953,6 +1953,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1966,18 +1978,55 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    loadCategories: function loadCategories() {
+    deleteCategory: function deleteCategory(id) {
       var _this = this;
 
-      axios.get("api/categories").then(function (_ref) {
+      swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        //send ajax request to server
+        if (result.value) {
+          console.log('value' + result.value);
+
+          _this.form.post("api/deletecategory/" + id).then(function () {
+            // Fire.$emit("ActionDone");
+            _this.loadCategories();
+
+            swal.fire("Deleted!", "Your data has been deleted.", "success");
+          })["catch"](function () {
+            swal.fire("Failed!", "Something went wrong.", "error");
+          });
+        }
+      });
+    },
+    loadCategories: function loadCategories() {
+      var _this2 = this;
+
+      axios.get("api/categories1").then(function (_ref) {
         var data = _ref.data;
-        return _this.categories = data.data;
+        return _this2.categories = data;
       })["catch"](function (response) {
         console.log(response);
       });
     },
     createCategory: function createCategory() {
-      this.form.post("api/addcategory").then(function () {})["catch"](function () {});
+      var _this3 = this;
+
+      this.form.post("api/addcategory").then(function () {
+        $("#addNew").modal("hide");
+        toast.fire({
+          type: "success",
+          title: "Category added successfully"
+        });
+
+        _this3.loadCategories();
+      })["catch"](function () {});
     },
     newModal: function newModal() {
       this.editmode = false;
@@ -60814,7 +60863,71 @@ var render = function() {
             _c("br")
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "box-body table-responsive no-padding" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _c(
+                "tbody",
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _vm._l(_vm.categories, function(category) {
+                    return _c("tr", { key: category.category_id }, [
+                      _c("td", [
+                        _vm._v(" " + _vm._s(category.category_id) + " ")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(" " + _vm._s(category.category_name) + " ")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(" " + _vm._s(category.category_flag) + " ")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                return _vm.editModal(category)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Edit\n                    "
+                            ),
+                            _c("i", { staticClass: "fa fa-edit" })
+                          ]
+                        ),
+                        _vm._v("\n                  /\n                  "),
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteCategory(category.category_id)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Delete\n                    "
+                            ),
+                            _c("i", { staticClass: "fa fa-trash" })
+                          ]
+                        )
+                      ])
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          ])
         ])
       ])
     ]),
@@ -61029,24 +61142,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-body table-responsive no-padding" }, [
-      _c("table", { staticClass: "table table-hover" }, [
-        _c("tbody", [
-          _c("tr", [
-            _c("th", [_vm._v("ID")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Name")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Flag")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Created At")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Actions")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [_c("td")])
-        ])
-      ])
+    return _c("tr", [
+      _c("th", [_vm._v("ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Flag")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Actions")])
     ])
   },
   function() {
