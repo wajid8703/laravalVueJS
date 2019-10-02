@@ -43,6 +43,7 @@
                     </a>
                   </td>
                 </tr>
+                <pagination :data="laravelData" @pagination-change-page="getResults"></pagination>
               </tbody>
             </table>
           </div>
@@ -154,7 +155,7 @@ export default {
       axios
         .get("api/categories1")
         .then(({ data }) => (
-           this.categories = data))
+           this.categories = data.data))
         .catch(response => {
           console.log(response);
         });

@@ -94,10 +94,10 @@ class UserController extends Controller
 
     public function getCategories(){
 
-        // $a = Category::latest()->paginate(60);
-        $a = Category::get();
-        
-        return $a;
+        $a = Category::paginate(10);
+        // $a = Category::get();
+        dd($a);
+        return response()->json($a);
     }
 
     public function deleteCategory($id){

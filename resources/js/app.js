@@ -49,6 +49,7 @@ let routes = [
     { path: '/developer', component: require('./components/DeveloperComponent.vue').default },
     { path: '/profile', component: require('./components/ProfileComponent.vue').default },
     { path: '/categories', component: require('./components/CategoriesComponent.vue').default },
+    { path: '/pagination', component: require('laravel-vue-pagination').default },
     { path: '/users', component: require('./components/UsersComponent.vue').default },
     {
         path: '/user/:id',
